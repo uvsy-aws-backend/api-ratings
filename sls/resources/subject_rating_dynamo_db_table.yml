@@ -1,0 +1,12 @@
+Resources:
+  SubjectRating:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: ${self:provider.stage}-subjects-rating
+      AttributeDefinitions:
+        - AttributeName: "subject_id"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "subject_id"
+          KeyType: "HASH"
+      BillingMode: PAY_PER_REQUEST

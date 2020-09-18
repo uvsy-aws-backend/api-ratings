@@ -1,0 +1,18 @@
+Resources:
+  StudentSubjectRating:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: ${self:provider.stage}-student-subjects-rating
+      AttributeDefinitions:
+        - AttributeName: "user_id"
+          AttributeType: "S"
+        - AttributeName: "subject_id"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "user_id"
+          KeyType: "HASH"
+        - AttributeName: "subject_id"
+          KeyType: "RANGE"
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES

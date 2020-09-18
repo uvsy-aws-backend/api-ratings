@@ -1,0 +1,7 @@
+subject-rating-processor:
+  name: ${self:provider.stage}-${self:service}-subject-processor
+  handler: app.uvsy.tasks.subject.SubjectRatingProcessor
+  events:
+    - stream:
+        type: dynamodb
+        arn: !GetAtt StudentSubjectRating.StreamArn

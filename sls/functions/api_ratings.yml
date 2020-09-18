@@ -1,0 +1,66 @@
+api-ratings:
+  name: ${self:provider.stage}-${self:service}
+  handler: app.uvsy.RatingsAPI
+  events:
+    # Institution
+    - http:
+        path: /v1/ratings/institution/courses/{id}
+        method: GET
+        cors: true
+        request:
+          parameters:
+            paths:
+              id: true
+    - http:
+        path: /v1/ratings/institution/courses
+        method: GET
+        cors: true
+    - http:
+        path: /v1/ratings/institution/subjects/{id}
+        method: GET
+        cors: true
+        request:
+          parameters:
+            paths:
+              id: true
+    - http:
+        path: /v1/ratings/institution/subjects
+        method: GET
+        cors: true
+    # Student
+    - http:
+        path: /v1/ratings/student/{user_id}/courses/{id}
+        method: GET
+        cors: true
+        request:
+          parameters:
+            paths:
+              user_id: true
+              id: true
+    - http:
+        path: /v1/ratings/student/{user_id}/courses/{id}
+        method: PUT
+        cors: true
+        request:
+          parameters:
+            paths:
+              user_id: true
+              id: true
+    - http:
+        path: /v1/ratings/student/{user_id}/subjects/{id}
+        method: GET
+        cors: true
+        request:
+          parameters:
+            paths:
+              user_id: true
+              id: true
+    - http:
+        path: /v1/ratings/student/{user_id}/subjects/{id}
+        method: PUT
+        cors: true
+        request:
+          parameters:
+            paths:
+              user_id: true
+              id: true

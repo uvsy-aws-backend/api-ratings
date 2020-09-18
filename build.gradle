@@ -1,0 +1,107 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.12.1"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'docker-compose'
+
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+
+group 'app.universy'
+version '1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+dependencies {
+
+    // Logging
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
+
+    // Databases
+    compile "com.github.universy-code:java-dynamo-client:${javaDynamoClientVersion}"
+
+
+    // Lombok
+    compile group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
+
+    // Serverless API
+    compile "com.github.GonzaloSaad:java-serverless-api:${serverlessAPIVersion}"
+
+    // Universy
+    compile "com.github.uvsy-aws-backend:java-lambda-dynamo-handlers:${javaLambdaDynamoHandlersVersion}"
+
+}
+
+jar {
+    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+
+    manifest {
+    }
+}
+
+task copyClassesToLocalRunFolder(type: Copy) {
+    from(sourceSets.main.output) {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    into buildDir.path + "/run"
+}
+
+task copyDependenciesToLocalRunFolder(type: Copy) {
+    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+    into buildDir.path + "/run"
+}
+
+
+task buildForLocalRun {
+    doLast{
+        println "Built for local run under build/run"
+    }
+}
+
+buildForLocalRun.dependsOn build
+buildForLocalRun.dependsOn copyDependenciesToLocalRunFolder
+buildForLocalRun.dependsOn copyClassesToLocalRunFolder
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip
+
+dockerCompose {
+    useComposeFiles = ['docker-compose.yml']
+    startedServices = ['dynamodb']
+    forceRecreate = true
+}
+
+build.dependsOn buildZip
