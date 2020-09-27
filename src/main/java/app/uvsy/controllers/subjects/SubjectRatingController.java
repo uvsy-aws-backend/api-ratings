@@ -9,6 +9,9 @@ import org.github.serverless.api.annotations.HttpMethod;
 import org.github.serverless.api.annotations.handler.Handler;
 import org.github.serverless.api.annotations.parameters.BodyParameter;
 import org.github.serverless.api.annotations.parameters.PathParameter;
+import org.github.serverless.api.annotations.parameters.QueryParameter;
+
+import java.util.Optional;
 
 public class SubjectRatingController {
 
@@ -29,7 +32,12 @@ public class SubjectRatingController {
     }
 
     @Handler(method = HttpMethod.POST, resource = "/v1/ratings/subjects/query")
-    public Response<SubjectRatingQueryResult> getSubjectsRating(@BodyParameter SubjectQueryPayload payload) {
-        return Response.of(subjectRatingsService.resolveSubjectsQuery(payload.getSubjectsId()));
+    public Response<SubjectRatingQueryResult> getSubjectsRating(@QueryParameter(name = "onlyRating", required = false) Boolean onlyRating,
+                                                                @BodyParameter SubjectQueryPayload payload) {
+        return Response.of(subjectRatingsService.resolveSubjectsQuery(
+                payload.getSubjectsId(),
+                Optional.ofNullable(onlyRating).orElse(Boolean.FALSE)
+        ));
     }
+
 }

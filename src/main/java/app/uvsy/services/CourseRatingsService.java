@@ -26,7 +26,7 @@ public class CourseRatingsService {
                 .collect(Collectors.toList());
     }
 
-    public CourseRatingQueryResult resolveCourseQuery(List<String> coursesId) {
+    public CourseRatingQueryResult resolveCourseQuery(List<String> coursesId, boolean onlyRating) {
         DynamoDBDAO<CourseRating> courseRatingDynamoDAO = DynamoDBDAO.createFor(CourseRating.class);
         List<CourseRating> courseRatings = coursesId.stream()
                 .map(courseRatingDynamoDAO::get)
@@ -39,6 +39,9 @@ public class CourseRatingsService {
                 .average()
                 .orElse(0);
 
+        if (onlyRating) {
+            return new CourseRatingQueryResult(rating);
+        }
         return new CourseRatingQueryResult(rating, courseRatings);
     }
 }
