@@ -71,5 +71,19 @@ public class CourseRating {
         this.wouldNotTakeAgain--;
     }
 
+    public double getOverallRating(){
+        int total = overall.values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
 
+        if (total > 0) {
+            double rating = overall.entrySet()
+                    .stream()
+                    .mapToInt(e -> Integer.parseInt(e.getKey()) * e.getValue())
+                    .sum();
+            return rating / total;
+        }
+        return 0;
+    }
 }
