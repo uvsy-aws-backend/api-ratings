@@ -17,7 +17,7 @@ public class SubjectRatingsService {
                 .orElseThrow(()-> new RecordNotFoundException(subjectId));
     }
 
-    public SubjectRatingQueryResult resolveSubjectsQuery(List<String> subjectsId) {
+    public SubjectRatingQueryResult resolveSubjectsQuery(List<String> subjectsId, boolean onlyRating) {
         DynamoDBDAO<SubjectRating> subjectRatingDao = DynamoDBDAO.createFor(SubjectRating.class);
         List<SubjectRating> subjectRatings = subjectsId.stream()
                 .map(subjectRatingDao::get)
@@ -29,7 +29,9 @@ public class SubjectRatingsService {
                 .mapToDouble(SubjectRating::getRating)
                 .average()
                 .orElse(0);
-
+        if (onlyRating) {
+            return new SubjectRatingQueryResult(rating);
+        }
         return new SubjectRatingQueryResult(rating, subjectRatings);
     }
 }
