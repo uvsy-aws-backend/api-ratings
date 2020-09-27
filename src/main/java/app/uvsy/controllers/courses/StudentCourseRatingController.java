@@ -22,13 +22,13 @@ public class StudentCourseRatingController {
     }
 
 
-    @Handler(method = HttpMethod.GET, resource = "/v1/ratings/student/{user_id}/courses/{id}")
+    @Handler(method = HttpMethod.GET, resource = "/v1/ratings/students/{user_id}/courses/{id}")
     public Response<StudentCourseRating> getCourseRating(@PathParameter(name = "user_id") String userId,
                                                          @PathParameter(name = "id") String courseId) {
         return Response.of(courseRatingsService.getCourseRating(userId, courseId));
     }
 
-    @Handler(method = HttpMethod.PUT, resource = "/v1/ratings/student/{user_id}/courses/{id}")
+    @Handler(method = HttpMethod.PUT, resource = "/v1/ratings/students/{user_id}/courses/{id}")
     public void saveCourseRating(@PathParameter(name = "user_id") String userId,
                                  @PathParameter(name = "id") String courseId,
                                  @BodyParameter CreateCourseRatingPayload payload) {

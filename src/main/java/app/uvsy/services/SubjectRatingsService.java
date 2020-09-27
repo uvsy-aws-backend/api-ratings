@@ -2,6 +2,7 @@ package app.uvsy.services;
 
 import app.uvsy.database.DynamoDBDAO;
 import app.uvsy.model.SubjectRating;
+import app.uvsy.model.query.SubjectRatingQueryResult;
 import app.uvsy.services.exceptions.RecordNotFoundException;
 
 import java.util.List;
@@ -16,12 +17,19 @@ public class SubjectRatingsService {
                 .orElseThrow(()-> new RecordNotFoundException(subjectId));
     }
 
-    public List<SubjectRating> getSubjectsRating(List<String> subjectsId) {
+    public SubjectRatingQueryResult resolveSubjectsQuery(List<String> subjectsId) {
         DynamoDBDAO<SubjectRating> subjectRatingDao = DynamoDBDAO.createFor(SubjectRating.class);
-        return subjectsId.stream()
+        List<SubjectRating> subjectRatings = subjectsId.stream()
                 .map(subjectRatingDao::get)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
+
+        double rating = subjectRatings.stream()
+                .mapToDouble(SubjectRating::getRating)
+                .average()
+                .orElse(0);
+
+        return new SubjectRatingQueryResult(rating, subjectRatings);
     }
 }

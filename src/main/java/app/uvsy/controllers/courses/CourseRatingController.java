@@ -1,14 +1,16 @@
 package app.uvsy.controllers.courses;
 
+import app.uvsy.controllers.courses.payload.CourseReportPayload;
+import app.uvsy.controllers.subjects.payload.SubjectReportPayload;
 import app.uvsy.model.CourseRating;
+import app.uvsy.model.query.CourseRatingQueryResult;
+import app.uvsy.model.query.SubjectRatingQueryResult;
 import app.uvsy.response.Response;
 import app.uvsy.services.CourseRatingsService;
 import org.github.serverless.api.annotations.HttpMethod;
 import org.github.serverless.api.annotations.handler.Handler;
+import org.github.serverless.api.annotations.parameters.BodyParameter;
 import org.github.serverless.api.annotations.parameters.PathParameter;
-import org.github.serverless.api.annotations.parameters.QueryParameter;
-
-import java.util.List;
 
 public class CourseRatingController {
 
@@ -23,13 +25,15 @@ public class CourseRatingController {
     }
 
 
-    @Handler(method = HttpMethod.GET, resource = "/v1/ratings/institution/courses/{id}")
+    @Handler(method = HttpMethod.GET, resource = "/v1/ratings/courses/{id}")
     public Response<CourseRating> getCourseRating(@PathParameter(name = "id") String courseId) {
         return Response.of(courseRatingsService.getCourseRating(courseId));
     }
 
-    @Handler(method = HttpMethod.GET, resource = "/v1/ratings/institution/courses")
-    public Response<List<CourseRating>> getCoursesRating(@QueryParameter(name = "coursesId") List<String> coursesId) {
-        return Response.of(courseRatingsService.getCoursesRating(coursesId));
+    @Handler(method = HttpMethod.POST, resource = "/v1/ratings/courses/query")
+    public Response<CourseRatingQueryResult> getCoursesRating(@BodyParameter CourseReportPayload payload) {
+        return Response.of(courseRatingsService.resolveCourseQuery(payload.getCoursesId()));
     }
+
+
 }
