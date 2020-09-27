@@ -1,6 +1,6 @@
 package app.uvsy.controllers.subjects;
 
-import app.uvsy.controllers.subjects.payload.SubjectReportPayload;
+import app.uvsy.controllers.subjects.payload.SubjectQueryPayload;
 import app.uvsy.model.SubjectRating;
 import app.uvsy.model.query.SubjectRatingQueryResult;
 import app.uvsy.response.Response;
@@ -29,7 +29,7 @@ public class SubjectRatingController {
     }
 
     @Handler(method = HttpMethod.POST, resource = "/v1/ratings/subjects/query")
-    public Response<SubjectRatingQueryResult> getSubjectsRating(@BodyParameter SubjectReportPayload payload) {
+    public Response<SubjectRatingQueryResult> getSubjectsRating(@BodyParameter SubjectQueryPayload payload) {
         return Response.of(subjectRatingsService.resolveSubjectsQuery(payload.getSubjectsId()));
     }
 }

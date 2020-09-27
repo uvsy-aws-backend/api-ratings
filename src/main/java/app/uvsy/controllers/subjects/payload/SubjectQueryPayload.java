@@ -6,11 +6,11 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class SubjectReportPayload {
+public class SubjectQueryPayload {
 
     private final List<String> subjectsId;
 
-    public SubjectReportPayload(@JsonProperty(value = "subjectsId") List<String> subjectsId) {
+    public SubjectQueryPayload(@JsonProperty(value = "subjectsId") List<String> subjectsId) {
         this.subjectsId = subjectsId;
     }
 }

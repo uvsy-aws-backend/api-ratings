@@ -1,10 +1,8 @@
 package app.uvsy.controllers.courses;
 
-import app.uvsy.controllers.courses.payload.CourseReportPayload;
-import app.uvsy.controllers.subjects.payload.SubjectReportPayload;
+import app.uvsy.controllers.courses.payload.CourseQueryPayload;
 import app.uvsy.model.CourseRating;
 import app.uvsy.model.query.CourseRatingQueryResult;
-import app.uvsy.model.query.SubjectRatingQueryResult;
 import app.uvsy.response.Response;
 import app.uvsy.services.CourseRatingsService;
 import org.github.serverless.api.annotations.HttpMethod;
@@ -31,7 +29,7 @@ public class CourseRatingController {
     }
 
     @Handler(method = HttpMethod.POST, resource = "/v1/ratings/courses/query")
-    public Response<CourseRatingQueryResult> getCoursesRating(@BodyParameter CourseReportPayload payload) {
+    public Response<CourseRatingQueryResult> getCoursesRating(@BodyParameter CourseQueryPayload payload) {
         return Response.of(courseRatingsService.resolveCourseQuery(payload.getCoursesId()));
     }
 
