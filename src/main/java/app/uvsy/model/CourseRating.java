@@ -73,7 +73,7 @@ public class CourseRating {
     }
 
     @DynamoDBIgnore
-    public double getOverallRating(){
+    public double getOverallRating() {
         int total = overall.values()
                 .stream()
                 .mapToInt(Integer::intValue)
@@ -86,6 +86,30 @@ public class CourseRating {
                     .sum();
             return rating / total;
         }
+        return 0;
+    }
+
+    @DynamoDBIgnore
+    public double getDifficultyRating() {
+        int total = difficulty.values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        if (total > 0) {
+            double rating = difficulty.entrySet()
+                    .stream()
+                    .mapToInt(e -> Integer.parseInt(e.getKey()) * e.getValue())
+                    .sum();
+            return rating / total;
+        }
+        return 0;
+    }
+
+    @DynamoDBIgnore
+    public double getWouldTakeAgainRating() {
+        double total = wouldNotTakeAgain + wouldTakeAgain;
+        if (total > 0) return (wouldTakeAgain / total) * 100;
         return 0;
     }
 }
