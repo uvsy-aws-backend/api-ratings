@@ -1,7 +1,7 @@
 {
-  "name": "api-ratings",
+  "name": "ratings",
   "description": "",
-  "version": "0.0.1",
+  "version": "",
   "dependencies": {
     "serverless": "^1.71.0"
   },

@@ -8,7 +8,4 @@ repos:
       - id: check-yaml
         exclude: (sls/functions/.*_processor.yml)
       - id: end-of-file-fixer
-      - id: name-tests-test
-        exclude: tests/mocks/*
-      - id: requirements-txt-fixer
       - id: trailing-whitespace

@@ -3,7 +3,7 @@ version: '3.5'
 services:
   dynamodb:
     image: "amazon/dynamodb-local"
-    hostname: student-local-dynamodb
-    container_name: student-local-dynamodb
+    hostname: ratings-local-dynamodb
+    container_name: ratings-local-dynamodb
     ports:
       - "8000:8000"

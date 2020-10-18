@@ -1,4 +1,4 @@
-service: api-ratings
+service: ratings
 
 provider:
   name: aws
@@ -43,7 +43,7 @@ custom:
     number: 3
 
 functions:
-  - ${file(./sls/functions/api_ratings.yml)}
+  - ${file(./sls/functions/api.yml)}
   - ${file(./sls/functions/course_rating_processor.yml)}
   - ${file(./sls/functions/subject_rating_processor.yml)}
 

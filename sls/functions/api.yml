@@ -1,5 +1,5 @@
-api-ratings:
-  name: ${self:provider.stage}-${self:service}
+api:
+  name: ${self:provider.stage}-${self:service}-api
   handler: app.uvsy.RatingsAPI
   events:
     # Ratings
